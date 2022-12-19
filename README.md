@@ -7,7 +7,7 @@
 * Run the server 
 ```symfony server:start```
 
-* Open the browser on *localhost:8000*
+* Configure the DB on *.env file*. Mysql root user and without password is the default
 
 * Create the DB
 ```php bin/console doctrine:database:create```
@@ -15,3 +15,4 @@
 * Make the migration
 ```php bin/console make:migration``` and ```php bin/console doctrine:migrations:migrate```
 
+* Open the browser on *localhost:8000*
