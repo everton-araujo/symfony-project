@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Form\ProductType;
 use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
@@ -32,5 +33,16 @@ class ProductController extends AbstractController
         }
 
         return new Response('<h1>' . $message . '</h1>');
+    }
+
+    #[Route('/produto/adicionar', name: 'product_add')]
+    public function add(): Response
+    {
+        $form = $this->createForm(ProductType::class);
+
+        $data['title'] = 'Adicionar novo produto';
+        $data['form'] = $form;
+
+        return $this->render('product/form.html.twig', $data);
     }
 }
