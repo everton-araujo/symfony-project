@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     #[Route('/produto', name: 'product_index')]
+    #[IsGranted('ROLE_USER')]
     public function index(ProductRepository $productRepository)
     {
         // Busca os produtos cadastrados
@@ -24,6 +26,7 @@ class ProductController extends AbstractController
     }
 
     #[Route('/produto/adicionar', name: 'product_add')]
+    #[IsGranted('ROLE_USER')]
     public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
         $message = '';
@@ -47,6 +50,7 @@ class ProductController extends AbstractController
     }
 
     #[Route('/produto/editar/{id}', name: 'product_edit')]
+    #[IsGranted('ROLE_USER')]
     public function edit($id, Request $request, EntityManagerInterface $entityManager, ProductRepository $productRepository): Response
     {
         $message = '';
@@ -68,6 +72,7 @@ class ProductController extends AbstractController
     }
 
     #[Route('/produto/excluir/{id}', name: 'product_delete')]
+    #[IsGranted('ROLE_USER')]
     public function delete($id, EntityManagerInterface $entityManager, ProductRepository $productRepository): Response
     {
         $product = $productRepository->find($id);

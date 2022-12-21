@@ -10,12 +10,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class CategoryController extends AbstractController
 {
     #[Route('/categoria', name: 'category_index')]
+    #[IsGranted('ROLE_USER')]
     public function index(CategoryRepository $categoryRepository): Response
     {
+        // Restringir a página apenas aos ROLE_USER
+        $this->denyAccessUnlessGranted('ROLE_USER');
+
         // Buscar no DB todas categorias cadastradas
         $data['categories'] = $categoryRepository->findAll();
         $data['title'] = 'Gerenciar Categorias';
@@ -24,6 +29,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/categoria/adicionar', name: 'category_add')]
+    #[IsGranted('ROLE_USER')]
     public function addCategory(Request $request, EntityManagerInterface $entityManager): Response
     {
         $message = '';
@@ -47,6 +53,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/categoria/editar/{id}', name: 'category_edit')]
+    #[IsGranted('ROLE_USER')]
     public function edit($id, Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
         $message = '';
@@ -68,6 +75,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/categoria/excluir/{id}', name: 'category_delete')]
+    #[IsGranted('ROLE_USER')]
     public function delete($id, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
         $category = $categoryRepository->find($id);
