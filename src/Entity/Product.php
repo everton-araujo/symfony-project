@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
@@ -14,9 +15,18 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'O Nome do Produto deve contar mais de {{ limit }} caracteres',
+        maxMessage: 'O Nome do Produto deve contar no máximo {{ limit }} caracteres',
+    )]
     private ?string $name = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank]
+    #[Assert\Positive(message: 'O valor deve ser positivo')]
     private ?float $price = null;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
