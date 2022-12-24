@@ -7,6 +7,19 @@
 {% block body %}
     <h1>{{ title }}</h1>
     <a href="{{ path('product_add') }}" class='btn btn-primary'>Criar nova produto</a>
+
+    <form method='get' class='mt-3 mb-4'>
+      <label>Pesquiser pelo nome</label>
+      <input type='text' name='name' class='form-control mb-2' value='{{ productName }}'/>
+      <button type='submit' class='btn btn-primary'>Pesquisar</button>
+    </form>
+
+    <form method='get' class='mt-3 mb-4'>
+      <label>Pesquiser por preço</label>
+      <input type='text' name='price' class='form-control mb-2' value='{{ productPrice }}'/>
+      <button type='submit' class='btn btn-primary'>Pesquisar</button>
+    </form>
+
     <table class='table'>
       <thead>
         <tr>

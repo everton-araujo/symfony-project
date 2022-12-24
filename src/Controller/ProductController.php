@@ -16,12 +16,24 @@ class ProductController extends AbstractController
 {
     #[Route('/produto', name: 'product_index')]
     #[IsGranted('ROLE_USER')]
-    public function index(ProductRepository $productRepository)
+    public function index(ProductRepository $productRepository, Request $request)
     {
+        $productName = $request->query->get('name');
+        $productPrice = $request->query->get('price');
         // Busca os produtos cadastrados
-        $data['products'] = $productRepository->findAll();
-        $data['title'] = 'Gerenciar Produtos';
 
+        if (is_null($productPrice) && is_null($productName)) {
+            $data['products'] = $productRepository->findAll();
+        } else if (is_null($productPrice)) {
+            $data['products'] = $productRepository->findProductByLikeName($productName);
+        } else {
+            $data['products'] = $productRepository->findProductByLikePrice($productPrice);
+        }
+        
+        $data['productName'] = $productName;
+        $data['productPrice'] = $productPrice;
+        $data['title'] = 'Gerenciar Produtos';
+        
         return $this->render('product/index.html.twig', $data);
     }
 
@@ -40,6 +52,8 @@ class ProductController extends AbstractController
             $entityManager->persist($product);
             $entityManager->flush();
             $message = 'Produto cadastrado';
+
+            return $this->redirectToRoute('product_index');
         }
 
         $data['title'] = 'Adicionar novo produto';
