@@ -16,3 +16,5 @@
 ```php bin/console make:migration``` and ```php bin/console doctrine:migrations:migrate```
 
 * Open the browser on *localhost:8000*
+
+git test
